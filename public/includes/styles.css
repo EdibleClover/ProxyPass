@@ -1,0 +1,67 @@
+.wrapper {
+    display: flex;
+    align-items: stretch;
+	background-color: #959595;
+}          
+
+#sidebar.active {
+    margin-left: -275px;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -275px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+}
+/* Pretty stuff */
+
+#sidebar {
+	min-width: 275px;
+    max-width: 275px;
+    min-width: 275px;
+    max-width: 275px;
+    min-height: 100vh;
+    background: #343a40 !important;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+	border-top: 2px solid #c32328;
+    border-bottom: 2px solid #c32328;
+}
+
+#sidebarCollapse {
+	z-index:1000;
+}
+
+
+
+
+
+#HeadBar {
+	border-bottom: 2px solid #343a40 !important;
+}
+
+.siderbar-header {
+padding-bottom: 4px;
+}
+
+.col .cert {
+	border: solid 1px;
+}
+/* Certificate containers */
+#ret {
+	font-size: xx-small;
+
+	overflow-wrap: break-word;
+}
+
+#ret>div {
+	border: solid 1px
+	
+}
