@@ -59,17 +59,22 @@ app.post('/Pass', async function(req, res) {
 	Come to find out this is the most reliable way to get around proxys&firewalls
 	*/
 	try {
-		await evilDns.add(Domain, Origin)  //Set the Host
+		//await evilDns.add(Domain, Origin)  //Set the Host
+		
+		await SetHost(Domain, Origin)
+		
 		let Body = await Req(Domain); //Get The Body
 		let CSS = await GetCSSContent(Body) //Get CSS Stuff
 		let JS = await GetJSContent(Body) 
 		let CleanCSS = WrapCSS(CSS) //Wrap them in TAGS
 		let CleanJS = WrapJS(JS)
-		
+		await CleanHost(Domain)
 		/* Send the stuffs, Tried iFrames but its wayyyy to fuckin slow, 
 		Would be Excellent to find a way to SandBox */
-		await evilDns.Remove(Domain, Origin)
+		//await evilDns.Remove(Domain, Origin)
 		res.send(Body + CleanCSS + CleanJS)
+		
+		
 	}
 	catch(err) {
 		console.log(err)
@@ -113,7 +118,16 @@ async function GetJSContent(Dom) {
 }
 
 
-
+//
+function SetHost(Domain, Origin) {
+		let i = Domain.indexOf('/')
+		let d = Domain.slice(0, i)
+		evilDns.add(d, Origin)
+	}
+	
+function CleanHost(Domain) {
+	evilDns.remove(Domain, '*')
+}
 
 
 
