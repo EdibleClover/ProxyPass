@@ -29,11 +29,12 @@ const StripProto = MyModules.StripProto
 const WrapCSS = MyModules.WrapCSS
 const WrapJS = MyModules.WrapJS
 const AppendDom = MyModules.AppendDom
+const StripPath = MyModules.StripPath
 /* End */
 
 /*
 *		Some Test data:
-*		mywebsitegothacked.com		
+*			mywebsitegothacked.com	
 *       192.185.46.31
 *
 *		Some TODO
@@ -52,23 +53,23 @@ app.post('/Pass', async function(req, res) {
 	const Origin = req.body.Origin;   
 	const Domain = req.body.Domain;   
 	console.log("Origin Ip: " + req.body.Origin)
-	console.log("Domain: " + req.body.Domain)
+	console.log("Domain: " + req.body.Domain + "\n\n\n*********************")
 	/* End */
 	/*
 	Modify Nodes DNS resolver 
 	Come to find out this is the most reliable way to get around proxys&firewalls
 	*/
+	
+	
+	/*Try to set my custom host */
 	try {
-		//await evilDns.add(Domain, Origin)  //Set the Host
-		
-		await SetHost(Domain, Origin)
-		
+		await SetHost(await StripPath(Domain), Origin)
 		let Body = await Req(Domain); //Get The Body
 		let CSS = await GetCSSContent(Body) //Get CSS Stuff
 		let JS = await GetJSContent(Body) 
 		let CleanCSS = WrapCSS(CSS) //Wrap them in TAGS
 		let CleanJS = WrapJS(JS)
-		await CleanHost(Domain)
+		await CleanHost(await StripPath(Domain), Origin)
 		/* Send the stuffs, Tried iFrames but its wayyyy to fuckin slow, 
 		Would be Excellent to find a way to SandBox */
 		//await evilDns.Remove(Domain, Origin)
@@ -118,15 +119,20 @@ async function GetJSContent(Dom) {
 }
 
 
-//
-function SetHost(Domain, Origin) {
-		let i = Domain.indexOf('/')
-		let d = Domain.slice(0, i)
-		evilDns.add(d, Origin)
-	}
+//Need to add a trialing slash in frontend javascript for this to work properly. Without the slash I cut off the end fo the TLD using the string position
+async function SetHost(Domain, Origin) {
+	return new Promise(resolve => {
+		evilDns.add(Domain, Origin)
+		console.log("Added" + Domain + "Origin:" + Origin)
+		resolve(console.log("\n We Got Added \n"))
+	})
+}
 	
-function CleanHost(Domain) {
-	evilDns.remove(Domain, '*')
+function CleanHost(Domain, Origin) {
+	return new Promise(resolve => {
+	evilDns.remove(Domain, Origin)
+	resolve(console.log("\n\nHost has been removed!"))
+	});
 }
 
 

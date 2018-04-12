@@ -1,5 +1,4 @@
 
-/* add a popout affect for grabbing cert so its format is good */
 
 $("#GetCert").click(function() {
 		
@@ -17,6 +16,11 @@ $("#GetCert").click(function() {
 
 
 
-    $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-    });
+$('#sidebarCollapse').on('click', function () {
+	$('#sidebar').toggleClass('active');
+});
+	
+	
+/*This is all shit above^^^*/
+
+$("#ret").html("<svg width="100" height="100"><polygon class='hex' points='300,150 225,280 75,280 0,150 75,20 225,20'></polygon></svg>");

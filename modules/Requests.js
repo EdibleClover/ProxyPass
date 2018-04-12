@@ -16,6 +16,7 @@ module.exports = {
 					UserAgent: "Proxy-Pass"
 				}
 			};
+			console.log("REQUEST OPTIONS:\n" + options.uri)
 			rp(options).then(function(response) {  
 				resolve(response.body);  
 				//console.log(response.headers)
@@ -76,6 +77,14 @@ module.exports = {
 		function WrapJS(Content) {
 			let Wrapped = "<script>" + Content + "</script>"
 			return Wrapped
+		},
+	StripPath:
+		function StripPath(Domain) {
+			return new Promise(resolve => { 
+				let i = Domain.indexOf('/')
+				let d = Domain.slice(0, i)
+				resolve(d)
+			});
 		}
 }
 	
